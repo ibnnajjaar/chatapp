@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Actions\PublicKey;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -41,4 +42,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getPublicKeyAttribute(): int
+    {
+        if (! $this->private_key) {
+            return 0;
+        }
+
+        return (new PublicKey(
+            config('defaults.prime_number'),
+            config('defaults.generator_number'),
+            $this->private_key
+        ))->calculate();
+    }
 }
