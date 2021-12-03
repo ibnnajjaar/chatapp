@@ -39,7 +39,7 @@ Route::group([
 
     Route::post('/obtain-shared-key', [KeyExchangeController::class, 'generateSharedKeys'])->name('generate-shared-keys');
 
-    Route::get('/affine', [MessageController::class, 'show'])->name('message.show');
-    Route::post('/affine', [MessageController::class, 'store'])->name('message.store');
+    Route::get('/affine/{user?}', [MessageController::class, 'show'])->name('message.show');
+    Route::post('/affine/{user}', [MessageController::class, 'store'])->name('message.store');
 
 });

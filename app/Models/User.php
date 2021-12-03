@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Actions\AffineCipher;
 use App\Actions\PublicKey;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -47,6 +48,11 @@ class User extends Authenticatable
     public function sharedKeys(): HasMany
     {
         return $this->hasMany(SharedKey::class, 'owner_id');
+    }
+
+    public function messages(): HasMany
+    {
+        return $this->hasMany(Message::class);
     }
 
     public function saveSharedKey(User $user, int $shared_key)
@@ -98,7 +104,8 @@ class User extends Authenticatable
     public function affineCipherKeyOne(User $user): float
     {
         $shared_private_key_one = $this->sharedKeyOneWith($user);
-        return fmod($shared_private_key_one, 27);
+        $modded_key = fmod($shared_private_key_one, 27);
+        return AffineCipher::getKeyOneFor($modded_key);
     }
 
     public function affineCipherKeyTwo(User $user): float

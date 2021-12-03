@@ -45,11 +45,17 @@
             </dl>
         </div>
     </div>
-    <form action="{{ route('generate-shared-keys') }}" method="POST">
-        @csrf
-        <input type="hidden" name="user" value="{{ $user->id }}">
-        <button type="submit" class="py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
-            Obtain Shared Keys for {{ $user->name }}
-        </button>
-    </form>
+
+
+    <div class="flex">
+        <form action="{{ route('generate-shared-keys') }}" method="POST">
+            @csrf
+            <input type="hidden" name="user" value="{{ $user->id }}">
+            <button type="submit" class="py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
+                Obtain Shared Keys for {{ $user->name }}
+            </button>
+        </form>
+        <a href="{{ route('message.show', $user) }}" class="mx-2 rounded-md shadow py-2 px-4 border border-transparent text-sm font-medium text-white bg-green-500 hover:bg-green-600">{{ __("Affine Ciphered Chat") }}</a>
+    </div>
+
 @endforeach

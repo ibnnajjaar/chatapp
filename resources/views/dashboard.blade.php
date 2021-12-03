@@ -74,7 +74,6 @@
                     </form>
                 </div>
 
-                <a href="{{ route('message.show') }}" class="mx-2 rounded-md shadow py-2 px-4 border border-transparent text-sm font-medium text-white bg-green-500 hover:bg-green-600">{{ __("Affine Ciphered Chat") }}</a>
             </div>
 
             @include('partials._users-card')
