@@ -40,13 +40,13 @@
                             </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {{ $user->public_key }}
+                            Key1: {{ $user->public_key_one }}, Key2: {{ $user->public_key_two }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {{ auth()->user()->sharedKeyWith($user) }}
+                            SK1: {{ auth()->user()->sharedKeyOneWith($user) }}, SK2: {{ auth()->user()->sharedKeyTwoWith($user) }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <form action="{{ route('obtain-shared-key') }}" method="POST">
+                            <form action="{{ route('generate-shared-keys') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="user" value="{{ $user->id }}">
                                 <button type="submit" class="py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">

@@ -14,7 +14,8 @@ class AddPrivateKeyToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('private_key')->nullable();
+            $table->string('private_key_one')->nullable();
+            $table->string('private_key_two')->nullable();
         });
     }
 
@@ -26,7 +27,8 @@ class AddPrivateKeyToUsers extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('private_key');
+            $table->dropColumn('private_key_one');
+            $table->dropColumn('private_key_two');
         });
     }
 }

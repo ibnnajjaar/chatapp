@@ -2,6 +2,8 @@
 
 use App\Actions\PrivateKey;
 use App\Actions\SharedKey;
+use App\Http\Controllers\KeyExchangeController;
+use App\Http\Controllers\MessageController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -33,33 +35,11 @@ Route::group([
 ], function () {
 
     // Private Key
-    Route::post('/obtain-private-key', function () {
-        (new PrivateKey())->savePrivateKey(auth()->user());
+    Route::post('/obtain-private-key', [KeyExchangeController::class, 'generatePrivateKeys'])->name('generate-private-keys');
 
-        return redirect()->back();
-    })->name('obtain-private-key');
+    Route::post('/obtain-shared-key', [KeyExchangeController::class, 'generateSharedKeys'])->name('generate-shared-keys');
 
-
-    /**
-     * Validate user and
-     * obtain shared key then
-     * save it in shared keys table
-     */
-    Route::post('/obtain-shared-key', function (Request $request) {
-        request()->validate([
-            'user' => 'exists:users,id'
-        ]);
-
-        $user = User::where('id', request()->input('user'))->first();
-
-        $sharedKeyInstance = new App\Actions\SharedKey(
-            config('defaults.prime_number'),
-            auth()->user()->private_key,
-            $user->public_key
-        );
-        $sharedKeyInstance->saveKeyFor(auth()->user(), $user);
-
-        return redirect()->back();
-    })->name('obtain-shared-key');
+    Route::get('/affine', [MessageController::class, 'show'])->name('message.show');
+    Route::post('/affine', [MessageController::class, 'store'])->name('message.store');
 
 });
