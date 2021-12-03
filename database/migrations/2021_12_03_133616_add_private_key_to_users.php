@@ -16,6 +16,11 @@ class AddPrivateKeyToUsers extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('private_key_one')->nullable();
             $table->string('private_key_two')->nullable();
+
+            $table->unsignedInteger('prime_p')->nullable();
+            $table->unsignedInteger('prime_q')->nullable();
+            $table->unsignedInteger('private_key')->nullable();
+            $table->unsignedInteger('public_key')->nullable();
         });
     }
 
@@ -29,6 +34,11 @@ class AddPrivateKeyToUsers extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('private_key_one');
             $table->dropColumn('private_key_two');
+
+            $table->dropColumn('prime_p');
+            $table->dropColumn('prime_q');
+            $table->dropColumn('private_e');
+            $table->dropColumn('public_d');
         });
     }
 }

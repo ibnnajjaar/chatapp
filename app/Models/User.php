@@ -63,6 +63,11 @@ class User extends Authenticatable
         $this->sharedKeys()->save($sharedKey);
     }
 
+    public function hasRsaKeys(): bool
+    {
+        return $this->prime_p && $this->prime_q && $this->public_key && $this->private_key;
+    }
+
     public function getPublicKeyOneAttribute(): int
     {
         if (! $this->private_key_one) {
@@ -87,6 +92,11 @@ class User extends Authenticatable
             config('defaults.generator_number'),
             $this->private_key_two
         ))->calculate();
+    }
+
+    public function getPublicNAttribute()
+    {
+        return $this->prime_p * $this->prime_q;
     }
 
     public function sharedKeyOneWith(User $user)

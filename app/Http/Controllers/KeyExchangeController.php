@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\PrivateKey;
+use App\Actions\RSACipher;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -55,4 +56,28 @@ class KeyExchangeController extends Controller
         return redirect()->back();
     }
 
+
+    public function generateRsaKeys(): RedirectResponse
+    {
+        $user = auth()->user();
+        if ($user->hasRsaKeys()) {
+            return redirect()->back();
+        }
+
+        $rsa = new RSACipher();
+        $rsa->setPrimes();
+
+        $primeP = $rsa->getPrimeP();
+        $primeQ = $rsa->getPrimeQ();
+        $privateKey = $rsa->getPrivateKey();
+        $publicKey = $rsa->getPublicKey();
+
+        $user->prime_p = $primeP;
+        $user->prime_q = $primeQ;
+        $user->private_key = $privateKey;
+        $user->public_key = $publicKey;
+        $user->save();
+
+        return redirect()->back();
+    }
 }

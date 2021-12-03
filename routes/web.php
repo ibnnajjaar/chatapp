@@ -35,11 +35,19 @@ Route::group([
 ], function () {
 
     // Private Key
-    Route::post('/obtain-private-key', [KeyExchangeController::class, 'generatePrivateKeys'])->name('generate-private-keys');
-
-    Route::post('/obtain-shared-key', [KeyExchangeController::class, 'generateSharedKeys'])->name('generate-shared-keys');
+    Route::post('obtain-private-key', [KeyExchangeController::class, 'generatePrivateKeys'])->name('generate-private-keys');
+    Route::post('obtain-shared-key', [KeyExchangeController::class, 'generateSharedKeys'])->name('generate-shared-keys');
+    Route::post('obtain-rsa-keys', [KeyExchangeController::class, 'generateRsaKeys'])->name('generate-rsa-keys');
 
     Route::get('/affine/{user?}', [MessageController::class, 'show'])->name('message.show');
     Route::post('/affine/{user}', [MessageController::class, 'store'])->name('message.store');
 
+
+});
+
+Route::get('/test', function () {
+
+    $rsa = new \App\Actions\RSACipher();
+    echo $rsa->getPublicKeyExponent();
+    echo $rsa->getDetermine();
 });
