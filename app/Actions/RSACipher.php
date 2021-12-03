@@ -18,8 +18,8 @@ class RSACipher
 
         $this->n = $this->p * $this->q;
         $this->phi = ($this->p - 1) * ($this->q - 1);
-        $this->setPublicKey();
-        $this->setPrivateKey();
+        $this->obtainPublicKeys();
+        $this->obtainPrivateKeys();
     }
 
     public function getPrimeP(): int
@@ -42,8 +42,51 @@ class RSACipher
         return $this->private_key;
     }
 
+    public function setPublicKeys($publicKey, $publicN)
+    {
+        $this->public_key = $publicKey;
+        $this->n = $publicN;
+    }
+
+    public function setPrivateKeys($privateKey, $publicN)
+    {
+        $this->private_key = $privateKey;
+        $this->n = $publicN;
+    }
+
+    public function encrypt(string $plainText): string
+    {
+        $cipherText = '';
+
+        foreach (str_split($plainText) as $char) {
+            $numericValue = Alphabet::$alphabetValues[$char] ?? 0;
+            $cipherValue = pow($numericValue, $this->public_key);
+            $cipherValue = fmod($cipherValue, $this->n);
+            $cipherText .= $cipherValue . ',';
+        }
+
+        return $cipherText;
+    }
+
+    public function decrypt(string $cipherText): string
+    {
+        $cipherValues = explode(',', $cipherText);
+        $plainText = '';
+        foreach ($cipherValues as $char) {
+            if ($char == 0) {
+                continue;
+            }
+            $cipherValue = bcpowmod($char, $this->private_key, $this->n);
+            $cipherValue = fmod($cipherValue, 26);
+            $plainText .= Alphabet::$alphabet[$cipherValue] ?? 'a';
+        }
+
+        return $plainText;
+    }
+
+
     // Choose e as public key exponent
-    private function setPublicKey()
+    private function obtainPublicKeys()
     {
         for ($e = 2; $e < $this->phi; $e++) {
             // e is for public key exponent
@@ -55,7 +98,7 @@ class RSACipher
     }
 
     // Choose a private key
-    private function setPrivateKey()
+    private function obtainPrivateKeys()
     {
         $private_key = 1;
 

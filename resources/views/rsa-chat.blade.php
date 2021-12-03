@@ -26,7 +26,7 @@
 
                     @foreach ($messages as $message)
                         <div class="bg-blue-600 rounded-full text-white px-4 py-2 mb-2">
-                            {{ optional($message->user)->name }}: {{ $message->decryptedMessageToUser($user) }}
+                            {{ optional($message->user)->name }}: {{ $message->rsaDecryptedMessage() }}
                         </div>
                     @endforeach
 

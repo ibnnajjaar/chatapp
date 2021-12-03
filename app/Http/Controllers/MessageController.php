@@ -46,7 +46,7 @@ class MessageController extends Controller
         $message->type = 'affine';
         $message->save();
 
-        return $this->show($user);
+        return $this->affineShow($user);
     }
 
     public function rsaShow(?User $user)
@@ -66,7 +66,27 @@ class MessageController extends Controller
 
     public function rsaStore(User $user, Request $request)
     {
+        $request->validate([
+            'message' => 'required|string',
+        ]);
 
+        $cleaned = preg_replace('/\PL/u', '', $request->input('message'));
+        $cleaned = strtolower($cleaned);
+
+        $public_key = $user->public_key;
+        $public_n = $user->public_n;
+
+        $rsaCipher = new \App\Actions\RSACipher();
+        $rsaCipher->setPublicKeys($public_key, $public_n);
+        $cipherText = $rsaCipher->encrypt($cleaned);
+
+        $message = new Message();
+        $message->message = $cipherText;
+        $message->user()->associate(auth()->user());
+        $message->type = 'rsa';
+        $message->save();
+
+        return $this->rsaShow($user);
     }
 
 }

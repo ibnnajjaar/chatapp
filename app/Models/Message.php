@@ -32,4 +32,11 @@ class Message extends Model
         $affineCipher = new \App\Actions\AffineCipher($key1, $key2);
         return $affineCipher->decrypt($this->message);
     }
+
+    public function rsaDecryptedMessage()
+    {
+        $rsaCipher = new \App\Actions\RSACipher();
+        $rsaCipher->setPrivateKeys(auth()->user()->private_key, auth()->user()->public_n);
+        return $rsaCipher->decrypt($this->message);
+    }
 }
