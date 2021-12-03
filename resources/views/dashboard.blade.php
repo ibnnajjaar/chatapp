@@ -64,6 +64,7 @@
                 </div>
             </div>
 
+            @if (! auth()->user()->hasExchangeKeys())
             <div class="mt-4 flex">
                 <div class="rounded-md shadow">
                     <form action="{{ route('generate-private-keys') }}" method="POST">
@@ -74,6 +75,7 @@
                     </form>
                 </div>
             </div>
+            @endif
 
             <div class="bg-white shadow overflow-hidden sm:rounded-lg mt-8">
                 <div class="px-4 py-5 sm:px-6">
@@ -102,6 +104,8 @@
                     </dl>
                 </div>
             </div>
+
+            @if (! auth()->user()->hasRSAKeys())
             <div class="mt-4 flex">
                 <div class="rounded-md shadow">
                     <form action="{{ route('generate-rsa-keys') }}" method="POST">
@@ -112,6 +116,7 @@
                     </form>
                 </div>
             </div>
+            @endif
 
 
             @include('partials._users-card')

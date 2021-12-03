@@ -1,5 +1,5 @@
 
-<h1 class="text-2xl mt-8">Users</h1>
+<h1 class="text-2xl mt-8">All Users</h1>
 
 @foreach($users as $user)
     @if ($user->id === Auth::user()->id)
@@ -56,6 +56,7 @@
 
 
     <div class="flex">
+        @if (! auth()->user()->hasSharedKeyFor($user))
         <form action="{{ route('generate-shared-keys') }}" method="POST">
             @csrf
             <input type="hidden" name="user" value="{{ $user->id }}">
@@ -63,6 +64,7 @@
                 Obtain Shared Keys for {{ $user->name }}
             </button>
         </form>
+        @endif
         <a href="{{ route('message.affine.show', $user) }}" class="ml-2 rounded-md shadow py-2 px-4 border border-transparent text-sm font-medium text-white bg-green-500 hover:bg-green-600">{{ __("Affine Ciphered Chat") }}</a>
 
         <a href="{{ route('message.rsa.show', $user) }}" class="ml-2 rounded-md shadow py-2 px-4 border border-transparent text-sm font-medium text-white bg-green-500 hover:bg-green-600">

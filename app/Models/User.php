@@ -123,4 +123,14 @@ class User extends Authenticatable
         $shared_private_key_two = $this->sharedKeyTwoWith($user);
         return fmod($shared_private_key_two, 27);
     }
+
+    public function hasExchangeKeys(): bool
+    {
+        return $this->private_key_one && $this->private_key_two;
+    }
+
+    public function hasSharedKeyFor(User $user): bool
+    {
+        return $this->sharedKeyOneWith($user) && $this->sharedKeyTwoWith($user);
+    }
 }
