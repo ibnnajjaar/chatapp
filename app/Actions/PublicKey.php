@@ -18,6 +18,6 @@ class PublicKey
 
     public function calculate(): int
     {
-        return $this->generatorNumber * $this->privateNumber % $this->primeNumber;
+        return bcpowmod($this->generatorNumber, $this->privateNumber, $this->primeNumber);
     }
 }

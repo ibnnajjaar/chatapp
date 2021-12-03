@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Actions\PublicKey;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -43,6 +44,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function sharedKeys(): HasMany
+    {
+        return $this->hasMany(SharedKey::class, 'owner_id');
+    }
+
+    public function saveSharedKey(User $user, int $shared_key)
+    {
+        $sharedKey = new SharedKey();
+        $sharedKey->user()->associate($user);
+        $sharedKey->shared_key = $shared_key;
+        $this->sharedKeys()->save($sharedKey);
+    }
+
     public function getPublicKeyAttribute(): int
     {
         if (! $this->private_key) {
@@ -54,5 +68,11 @@ class User extends Authenticatable
             config('defaults.generator_number'),
             $this->private_key
         ))->calculate();
+    }
+
+    public function sharedKeyWith(User $user)
+    {
+        $shared_key = $this->sharedKeys()->where('user_id', $user->id)->orderBy('created_at', 'desc')->first();
+        return $shared_key->shared_key ?? 0;
     }
 }
