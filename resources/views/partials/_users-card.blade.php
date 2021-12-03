@@ -63,7 +63,11 @@
                 Obtain Shared Keys for {{ $user->name }}
             </button>
         </form>
-        <a href="{{ route('message.show', $user) }}" class="mx-2 rounded-md shadow py-2 px-4 border border-transparent text-sm font-medium text-white bg-green-500 hover:bg-green-600">{{ __("Affine Ciphered Chat") }}</a>
+        <a href="{{ route('message.affine.show', $user) }}" class="ml-2 rounded-md shadow py-2 px-4 border border-transparent text-sm font-medium text-white bg-green-500 hover:bg-green-600">{{ __("Affine Ciphered Chat") }}</a>
+
+        <a href="{{ route('message.rsa.show', $user) }}" class="ml-2 rounded-md shadow py-2 px-4 border border-transparent text-sm font-medium text-white bg-green-500 hover:bg-green-600">
+            {{ __("RSA Messaging") }}
+        </a>
     </div>
 
 @endforeach

@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="flex min-h-screen flex-col">
                 @if ($user->id)
-                <form class="mt-4 flex flex-col" action="{{ route('message.store', $user) }}" method="POST">
+                <form class="mt-4 flex flex-col" action="{{ route('message.rsa.store', $user) }}" method="POST">
                     @csrf
                     <textarea name="message"
                               class="bg-white border border-blue-200 p-4 rounded-lg focus:outline-none focus:ring focus:border-blue-300"

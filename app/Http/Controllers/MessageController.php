@@ -11,17 +11,22 @@ use Illuminate\Http\Request;
 class MessageController extends Controller
 {
 
-    public function show(?User $user)
+    public function affineShow(?User $user)
     {
-        $messages = Message::query()->orderBy('created_at', 'DESC')->with('user')->get();
-        return view('chat', [
+        $messages = Message::query()
+            ->where('type', 'affine')
+            ->orderBy('created_at', 'DESC')
+            ->with('user')
+            ->get();
+
+        return view('affine-chat', [
             'messages' => $messages,
             'user' => $user,
         ]);
     }
 
 
-    public function store(User $user, Request $request)
+    public function affineStore(User $user, Request $request)
     {
         $request->validate([
             'message' => 'required|string',
@@ -38,9 +43,30 @@ class MessageController extends Controller
         $message = new Message();
         $message->message = $cipherText;
         $message->user()->associate(auth()->user());
+        $message->type = 'affine';
         $message->save();
 
         return $this->show($user);
+    }
+
+    public function rsaShow(?User $user)
+    {
+        $messages = Message::query()
+            ->where('type', 'rsa')
+            ->orderBy('created_at', 'DESC')
+            ->with('user')
+            ->get();
+
+        return view('rsa-chat', [
+            'messages' => $messages,
+            'user' => $user,
+        ]);
+    }
+
+
+    public function rsaStore(User $user, Request $request)
+    {
+
     }
 
 }
