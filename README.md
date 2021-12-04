@@ -43,6 +43,5 @@ password: eve12345
 ```
 
 ### Credits
-## Credits
 - [Hussain Afeef (@ibnnajjaar)](https://github.com/ibnnajjaar)
 - [Shaffan (@shaffan_09)](https://github.com/shaffan09)
