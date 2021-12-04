@@ -5,6 +5,12 @@ class RSACipher
 {
     public int $p, $q, $n, $phi, $private_key, $public_key;
     private array $primePool = [11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101,103,107,109,113];
+    private Alphabet $alphabet;
+
+    public function __construct()
+    {
+        $this->alphabet = new Alphabet();
+    }
 
     /**
      * RSACipher set primes.
@@ -59,7 +65,7 @@ class RSACipher
         $cipherText = '';
 
         foreach (str_split($plainText) as $char) {
-            $numericValue = Alphabet::$alphabetValues[$char] ?? 0;
+            $numericValue = $this->alphabet->getAlphabetValue($char);
             $cipherValue = pow($numericValue, $this->public_key);
             $cipherValue = fmod($cipherValue, $this->n);
             $cipherText .= $cipherValue . ',';
@@ -78,7 +84,7 @@ class RSACipher
             }
             $cipherValue = bcpowmod($char, $this->private_key, $this->n);
             $cipherValue = fmod($cipherValue, 26);
-            $plainText .= Alphabet::$alphabet[$cipherValue] ?? 'a';
+            $plainText .= $this->alphabet->getAlphabetLetter($cipherValue);
         }
 
         return $plainText;
