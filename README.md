@@ -1,3 +1,10 @@
+## Where is Code?
+Classes required to encrypt, decrypt data, to generate keys and share keys are located in the `app/Actions` directory.
+List of other places where some other project related logic can be found:
+1. `app/Http/Controllers/KeyExchangeController.php`
+1. `app/Http/Controllers/MessageController.php`
+1. `app/Models/Message.php`
+1. `app/Models/User.php`
 
 ### Requirements
 1. You need to have a php server running in your local network.
