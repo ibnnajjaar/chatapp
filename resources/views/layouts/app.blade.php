@@ -28,7 +28,7 @@
             </header>
 
             <!-- Page Content -->
-            <main>
+            <main class="md:mx-4">
                 {{ $slot }}
             </main>
         </div>
