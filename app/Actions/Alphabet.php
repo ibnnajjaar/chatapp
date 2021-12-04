@@ -5,7 +5,7 @@ namespace App\Actions;
 
 class Alphabet
 {
-    public static array $alphabetValues = [
+    public array $alphabetValues = [
         'a' => 0,
         'b' => 1,
         'c' => 2,
@@ -34,7 +34,7 @@ class Alphabet
         'z' => 25,
     ];
     // alphabets corresponding to a value
-    public static array $alphabet = [
+    public array $alphabet = [
         0 => 'a',
         1 => 'b',
         2 => 'c',
@@ -62,4 +62,14 @@ class Alphabet
         24 => 'y',
         25 => 'z',
     ];
+
+    public function getAlphabetValue(string $letter): int
+    {
+        return $this->alphabetValues[$letter] ?? 0;
+    }
+
+    public function getAlphabetLetter(int $value): string
+    {
+        return $this->alphabet[$value] ?? 'a';
+    }
 }

@@ -8,68 +8,13 @@ class AffineCipher
     private int $key1;
     private int $key2;
     private static array $available_keys = [1,3,5,7,9,11,15,17,19,21,23,25];
-    private array $alphabetValues = [
-        'a' => 0,
-        'b' => 1,
-        'c' => 2,
-        'd' => 3,
-        'e' => 4,
-        'f' => 5,
-        'g' => 6,
-        'h' => 7,
-        'i' => 8,
-        'j' => 9,
-        'k' => 10,
-        'l' => 11,
-        'm' => 12,
-        'n' => 13,
-        'o' => 14,
-        'p' => 15,
-        'q' => 16,
-        'r' => 17,
-        's' => 18,
-        't' => 19,
-        'u' => 20,
-        'v' => 21,
-        'w' => 22,
-        'x' => 23,
-        'y' => 24,
-        'z' => 25,
-    ];
-    // alphabets corresponding to a value
-    private array $alphabet = [
-        0 => 'a',
-        1 => 'b',
-        2 => 'c',
-        3 => 'd',
-        4 => 'e',
-        5 => 'f',
-        6 => 'g',
-        7 => 'h',
-        8 => 'i',
-        9 => 'j',
-        10 => 'k',
-        11 => 'l',
-        12 => 'm',
-        13 => 'n',
-        14 => 'o',
-        15 => 'p',
-        16 => 'q',
-        17 => 'r',
-        18 => 's',
-        19 => 't',
-        20 => 'u',
-        21 => 'v',
-        22 => 'w',
-        23 => 'x',
-        24 => 'y',
-        25 => 'z',
-    ];
+    private Alphabet $alphabet;
 
     public function __construct(int $key1, int $key2)
     {
         $this->key1 = $key1;
         $this->key2 = $key2;
+        $this->alphabet = new Alphabet();
     }
 
 
@@ -78,10 +23,10 @@ class AffineCipher
         $cipherText = '';
 
         foreach (str_split($plainText) as $char) {
-            $numericValue = $this->alphabetValues[$char] ?? 0;
+            $numericValue = $this->alphabet->getAlphabetValue($char);
             $cipherValue = $numericValue * $this->key1 + $this->key2;
             $cipherValue = fmod($cipherValue, 26);
-            $cipherText .= $this->alphabet[$cipherValue] ?? 'a';
+            $cipherText .= $this->alphabet->getAlphabetLetter($cipherValue);
         }
 
         return $cipherText;
@@ -99,7 +44,7 @@ class AffineCipher
         foreach (str_split($cipherText) as $char) {
 
             $keyOneInverse = $this->modInverse($this->key1);
-            $cipherValue = $this->alphabetValues[$char] ?? 0;
+            $cipherValue = $this->alphabet->getAlphabetValue($char);
             $plainTextValue = ($cipherValue - $this->key2) * $keyOneInverse;
 
             while ($plainTextValue < 0) {
@@ -107,8 +52,7 @@ class AffineCipher
             }
 
             $plainTextValue = fmod($plainTextValue, 26);
-
-            $plainText .= $this->alphabet[$plainTextValue] ?? 'a';
+            $plainText .= $this->alphabet->getAlphabetLetter($plainTextValue);
         }
 
         return $plainText;
