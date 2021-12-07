@@ -41,3 +41,7 @@ password: bob12345
 email: eve@example.com
 password: eve12345
 ```
+
+### Credits
+- [Hussain Afeef (@ibnnajjaar)](https://github.com/ibnnajjaar)
+- [Shaffan (@shaffan_09)](https://github.com/shaffan09)
